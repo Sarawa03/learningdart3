@@ -1,5 +1,90 @@
 import 'package:flutter/material.dart';
 
+class Cat {
+  final String name;
+  Cat(this.name);
+}
+
+class Person {
+  final String firstName;
+  final String lastName;
+
+  Person(this.firstName, this.lastName);
+}
+
+//Extensions
+extension Run on Cat {
+  void run() {
+    print('Cat $name is running');
+  }
+}
+
+extension FullName on Person {
+  String get fullName => '$firstName $lastName';
+}
+
+void extensions() {
+  final meow = Cat('fluffers');
+  print(meow.name);
+
+  meow.run();
+
+  final foo = Person('Foo', 'Bar');
+  print(foo.fullName);
+}
+
+//Sync, async
+
+Future<int> multipliedBytTwo(int a) {
+  return Future.delayed(Duration(seconds: 3), () => a * 2);
+}
+
+void asyncTest() async {
+  final result = await multipliedBytTwo(10);
+  print(result);
+}
+
+//Streams
+Stream<String> getName() {
+  return Stream.periodic(const Duration(seconds: 1), (value) {
+    return 'Foo';
+  });
+}
+
+void stream() async {
+  await for (final value in getName()) {
+    print(value);
+  }
+  print('Stream finished working');
+}
+
+//Generator
+Iterable<int> getOneTwoThree() sync* {
+  yield 1;
+  yield 2;
+  yield 3;
+}
+
+void generator() {
+  for (final value in getOneTwoThree()) {
+    print(value);
+  }
+}
+
+//Generics
+
+class Pair<A, B> {
+  final A value1;
+  final B value2;
+
+  Pair(this.value1, this.value2);
+}
+
+void generics() {
+  final names = Pair('Foo', 20);
+  print(names);
+}
+
 void main() {
   runApp(const MyApp());
 }
@@ -10,6 +95,11 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    extensions();
+    asyncTest();
+    stream();
+    generator();
+    generics();
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
